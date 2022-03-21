@@ -21,7 +21,7 @@ public class PropHP extends AbstractProp {
     @Override
     public void effect(HeroAircraft hero) {
         int hp = hero.getHp();
-        if (hp < 5) {
+        if (hp < hero.maxHp) {
             hero.setHp(hp + 1);
         }
         System.out.println("吃到回血道具");

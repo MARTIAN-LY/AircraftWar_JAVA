@@ -56,13 +56,13 @@ public class Game extends JPanel {
 
     //产生随机数
     private final Random random;
+    //每 6 个周期出现 1
+    private final int eliteAppearCycle = 6;
+    private final int mobAppearCycle = 1;
 
     public Game() {
-        //英雄机出场在中间，初始三滴血
-        heroAircraft = new HeroAircraft(
-                Main.WINDOW_WIDTH / 2,
-                Main.WINDOW_HEIGHT - ImageManager.HERO_IMAGE.getHeight(),
-                0, 0, 3);
+        //英雄机出场在中间，初始三滴血，单例模式
+        heroAircraft = HeroAircraft.getInstance();
 
         enemyAircrafts = new LinkedList<>();
         heroBullets = new LinkedList<>();
@@ -99,8 +99,8 @@ public class Game extends JPanel {
                 // 新敌机产生
                 if (enemyAircrafts.size() < enemyMaxNumber) {
                     // TODO
-                    //每6个周期产生一架精英敌机
-                    if (time % (6 * cycleDuration) == 0) {
+                    if (time % (eliteAppearCycle * cycleDuration) == 0) {
+                        //该周期产生一架精英敌机
                         enemyAircrafts.add(new EliteEnemy(
                                 random.nextInt(Main.WINDOW_WIDTH - ImageManager.ELITE_ENEMY_IMAGE.getWidth()),
                                 random.nextInt(Main.WINDOW_HEIGHT / 10),
@@ -108,8 +108,8 @@ public class Game extends JPanel {
                                 7,                                          //精英敌机纵向速度稍快
                                 3                                           //精英敌机3滴血
                         ));
-                    } else if (time % cycleDuration == 0) {
-                        //每个周期出现一架（例外：该周期出现精英敌机）
+                    } else if (time % (mobAppearCycle * cycleDuration) == 0) {
+                        //该周期出现一架
                         enemyAircrafts.add(new MobEnemy(
                                 random.nextInt(Main.WINDOW_WIDTH - ImageManager.ELITE_ENEMY_IMAGE.getWidth()),
                                 random.nextInt(Main.WINDOW_HEIGHT / 10),

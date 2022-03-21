@@ -2,7 +2,6 @@ package edu.hitsz.prop;
 
 import edu.hitsz.aircraft.AbstractAircraft;
 import edu.hitsz.aircraft.HeroAircraft;
-import edu.hitsz.application.Main;
 
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class PropFire extends AbstractProp{
     @Override
     public void effect(HeroAircraft hero) {
         int num = hero.getShootNum();
-        if (num < 4){
+        if (num < hero.maxBullets){
             hero.setShootNum(num + 1);
         }
         System.out.println("FireSupply active!");

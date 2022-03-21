@@ -26,7 +26,7 @@ public class EliteEnemy extends AbstractAircraft {
     /**
      * 子弹射击方向 (向上发射：-1，向下发射：1)
      */
-    private int direction = 1;
+    private final int direction = 1;
 
     /**
      * 精英敌机射击，子弹速度快于敌机速度
