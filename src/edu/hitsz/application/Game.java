@@ -3,10 +3,7 @@ package edu.hitsz.application;
 import edu.hitsz.aircraft.*;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.basic.AbstractFlyingObject;
-import edu.hitsz.prop.AbstractProp;
-import edu.hitsz.prop.PropBomb;
-import edu.hitsz.prop.PropFire;
-import edu.hitsz.prop.PropHP;
+import edu.hitsz.prop.*;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
 import javax.swing.*;
@@ -56,14 +53,26 @@ public class Game extends JPanel {
 
     //产生随机数
     private final Random random;
-    //每 6 个周期出现 1
+    //出现 1 架精英敌机的周期数
     private final int eliteAppearCycle = 6;
+    //出现 1 架普通敌机的周期数
     private final int mobAppearCycle = 1;
+    //敌机生产工厂中各种敌机的代号
+    private final int mobCode = 0;
+    private final int eliteCode = 1;
+    private final int bossCode = 2;
+    //各种敌机的分数
+    private final int mobScore = 10;
+    private final int eliteScore = 30;
+    private final int bossScore = 300;
+    //道具生产工厂中各种道具的代号
+    private final int bombCode = 0;
+    private final int fireCode = 1;
+    private final int hpCode = 2;
 
     public Game() {
         //英雄机出场在中间，初始三滴血，单例模式
         heroAircraft = HeroAircraft.getInstance();
-
         enemyAircrafts = new LinkedList<>();
         heroBullets = new LinkedList<>();
         enemyBullets = new LinkedList<>();
@@ -101,22 +110,10 @@ public class Game extends JPanel {
                     // TODO
                     if (time % (eliteAppearCycle * cycleDuration) == 0) {
                         //该周期产生一架精英敌机
-                        enemyAircrafts.add(new EliteEnemy(
-                                random.nextInt(Main.WINDOW_WIDTH - ImageManager.ELITE_ENEMY_IMAGE.getWidth()),
-                                random.nextInt(Main.WINDOW_HEIGHT / 10),
-                                random.nextInt(5) - 2,        //精英敌机有一定的横向速度
-                                7,                                          //精英敌机纵向速度稍快
-                                3                                           //精英敌机3滴血
-                        ));
+                        enemyAircrafts.add(SimpleEnemyFactory.createEnemy(eliteCode));                                //精英敌机3滴血);
                     } else if (time % (mobAppearCycle * cycleDuration) == 0) {
-                        //该周期出现一架
-                        enemyAircrafts.add(new MobEnemy(
-                                random.nextInt(Main.WINDOW_WIDTH - ImageManager.ELITE_ENEMY_IMAGE.getWidth()),
-                                random.nextInt(Main.WINDOW_HEIGHT / 10),
-                                random.nextInt(3) - 2,        //普通敌机有一定的横向速度
-                                6,
-                                1                                           //普通敌机1滴血
-                        ));
+                        //该周期出现一架普通敌机
+                        enemyAircrafts.add(SimpleEnemyFactory.createEnemy(mobCode));
                     }
 
                 }
@@ -255,21 +252,21 @@ public class Game extends JPanel {
                     // TODO 得分，产生道具
                     if (enemy.notValid()) {
                         if (enemy instanceof MobEnemy) {
-                            //普通敌机10分
-                            score += 10;
+                            //击毁普通敌机
+                            score += mobScore;
+
                         } else if (enemy instanceof EliteEnemy) {
-                            //精英敌机30分
-                            score += 30;
+                            //击毁精英敌机
+                            score += eliteScore;
                             //精英敌机死亡时概率产生道具
                             addProp(random.nextInt(5));
 
                         } else if (enemy instanceof BossEnemy) {
-                            //Boss 300分
-                            score += 300;
+                            //击毁 Boss 敌机
+                            score += bossScore;
                             //Boss死亡一定产生道具
                             addProp(random.nextInt(3));
                         }
-
                     }
                 }
                 // 英雄机 与 敌机 相撞，均损毁
@@ -301,27 +298,14 @@ public class Game extends JPanel {
      */
     private void addProp(int num) {
         switch (num) {
-            case 0:
-                props.add(new PropBomb(
-                        random.nextInt(Main.WINDOW_WIDTH - ImageManager.PROP_BOMB_IMAGE.getWidth()),
-                        random.nextInt(Main.WINDOW_HEIGHT / 10),
-                        random.nextInt(5) - 2,        //道具的横向速度
-                        5                                           //道具纵向速度
-                ));
+            case bombCode:
+                props.add(SimplePropFactory.createProp(bombCode));
                 break;
-            case 1:
-                props.add(new PropFire(random.nextInt(Main.WINDOW_WIDTH - ImageManager.PROP_BOMB_IMAGE.getWidth()),
-                        random.nextInt(Main.WINDOW_HEIGHT / 10),
-                        random.nextInt(5) - 2,        //道具的横向速度
-                        5                                           //道具纵向速度
-                ));
+            case fireCode:
+                props.add(SimplePropFactory.createProp(fireCode));
                 break;
-            case 2:
-                props.add(new PropHP(random.nextInt(Main.WINDOW_WIDTH - ImageManager.PROP_BOMB_IMAGE.getWidth()),
-                        random.nextInt(Main.WINDOW_HEIGHT / 10),
-                        random.nextInt(5) - 2,        //道具的横向速度
-                        5                                           //道具纵向速度
-                ));
+            case hpCode:
+                props.add(SimplePropFactory.createProp(hpCode));
                 break;
         }
     }
