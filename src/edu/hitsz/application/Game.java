@@ -107,24 +107,21 @@ public class Game extends JPanel {
             // 周期性执行（控制频率）
             if (timeCountAndNewCycleJudge()) {
                 System.out.println(time + "毫秒");
-                // 新敌机产生
-                if (enemyAircrafts.size() < enemyMaxNumber) {
-                    // TODO
-                    if (!bossExists) {
-                        if (time % (eliteAppearCycle * cycleDuration) == 0) {
-                            //该周期产生一架精英敌机
-                            enemyAircrafts.add(SimpleEnemyFactory.createEnemy(eliteCode));                                //精英敌机3滴血);
-                        } else if (time % (mobAppearCycle * cycleDuration) == 0) {
-                            //该周期出现一架普通敌机
-                            enemyAircrafts.add(SimpleEnemyFactory.createEnemy(mobCode));
-                        }
-                        if (score >= bossAppearScore && score % bossAppearScore == 0){
-                            //boss出现
-                            enemyAircrafts.add(SimpleEnemyFactory.createEnemy(bossCode));
-                            bossExists = true;
-                        }
-                    }
 
+                if (!bossExists && score >= bossAppearScore && score % bossAppearScore == 0) {
+                    //boss出现,boss出现时不产生其他敌机
+                    enemyAircrafts.add(SimpleEnemyFactory.createEnemy(bossCode));
+                    bossExists = true;
+                } else if (!bossExists && enemyAircrafts.size() < enemyMaxNumber) {
+                    // 新敌机产生
+                    // TODO
+                    if (time % (eliteAppearCycle * cycleDuration) == 0) {
+                        //该周期产生一架精英敌机
+                        enemyAircrafts.add(SimpleEnemyFactory.createEnemy(eliteCode));                                //精英敌机3滴血);
+                    } else if (time % (mobAppearCycle * cycleDuration) == 0) {
+                        //该周期出现一架普通敌机
+                        enemyAircrafts.add(SimpleEnemyFactory.createEnemy(mobCode));
+                    }
                 }
                 // 飞机射出子弹
                 shootAction();
