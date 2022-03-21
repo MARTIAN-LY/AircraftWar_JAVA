@@ -36,6 +36,17 @@ public abstract class AbstractAircraft extends AbstractFlyingObject {
         return hp;
     }
 
+    public int getMaxHp() {
+        return maxHp;
+    }
+
+    public void setMaxHp(int maxHp) {
+        this.maxHp = maxHp;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
 
     /**
      * 飞机射击方法，可射击对象必须实现

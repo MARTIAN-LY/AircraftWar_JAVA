@@ -18,6 +18,7 @@ abstract class AbstractFlyingObject
     + setLocation(double locationX, double locationY):void
     + getLocationX():int
     + getLocationY():int
+    + getSpeedX():int
     + getSpeedY():int
     + getImage():BufferedImage
     + getWidth():int
@@ -43,14 +44,25 @@ abstract class BaseBullet
 	+ getPower():int
 }
 
+abstract class AbstractProp{
+
+}
+
 AbstractFlyingObject <|-- AbstractAircraft
 AbstractFlyingObject <|-- BaseBullet
+AbstractFlyingObject <|-- AbstractProp
 
 AbstractAircraft <|-- HeroAircraft
 AbstractAircraft <|-- MobEnemy
+AbstractAircraft <|-- EliteEnemy
+AbstractAircraft <|-- BossEnemy
 
 BaseBullet <|-- HeroBullet
 BaseBullet <|-- EnemyBullet
+
+AbstractProp <|-- PropBomb
+AbstractProp <|-- PropFire
+AbstractProp <|-- PropHP
 
 class HeroAircraft {
     - shootNum:int
@@ -63,6 +75,17 @@ class HeroAircraft {
 
 class MobEnemy {
     + MobEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
+    + forward():void
+    + shoot():List<BaseBullet>
+}
+class EliteEnemy {
+    + EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
+    + forward():void
+    + shoot():List<BaseBullet>
+}
+
+class BossEnemy {
+    + BossEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
     + forward():void
     + shoot():List<BaseBullet>
 }

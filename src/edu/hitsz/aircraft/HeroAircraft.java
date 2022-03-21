@@ -54,15 +54,15 @@ public class HeroAircraft extends AbstractAircraft {
     public List<BaseBullet> shoot() {
         List<BaseBullet> res = new LinkedList<>();
         int x = this.getLocationX();
-        int y = this.getLocationY() + direction*2;
+        int y = this.getLocationY() + direction * 2;
         int speedX = 0;
         //设置
-        int speedY = this.getSpeedY() + direction*10;
+        int speedY = this.getSpeedY() + direction * 10;
         BaseBullet baseBullet;
-        for(int i=0; i<shootNum; i++){
+        for (int i = 0; i < shootNum; i++) {
             // 子弹发射位置相对飞机位置向前偏移
             // 多个子弹横向分散
-            baseBullet = new HeroBullet(x + (i*2 - shootNum + 1)*10, y, speedX, speedY, power);
+            baseBullet = new HeroBullet(x + (i * 2 - shootNum + 1) * 10, y, speedX, speedY, power);
             res.add(baseBullet);
         }
         return res;
@@ -78,4 +78,14 @@ public class HeroAircraft extends AbstractAircraft {
     public boolean crash(AbstractFlyingObject flyingObject) {
         return super.crash(flyingObject);
     }
+
+
+    public int getShootNum() {
+        return shootNum;
+    }
+
+    public void setShootNum(int shootNum) {
+        this.shootNum = shootNum;
+    }
+
 }

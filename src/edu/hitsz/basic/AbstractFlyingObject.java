@@ -127,6 +127,11 @@ public abstract class AbstractFlyingObject {
         this.locationY = (int) locationY;
     }
 
+    //获取横向速度，新增
+    public int getSpeedX() {
+        return speedX;
+    }
+
     public int getSpeedY() {
         return speedY;
     }
