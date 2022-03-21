@@ -14,7 +14,7 @@ public class PropFire extends AbstractProp{
 
     /**
      * 火力道具会让英雄子弹数多一发,
-     * 最多四发
+     * 英雄最大子弹数量有限制
      * @param hero
      */
     @Override
@@ -33,7 +33,6 @@ public class PropFire extends AbstractProp{
      */
     @Override
     public void effect(List<AbstractAircraft> enemies) {
-
     }
 
 }

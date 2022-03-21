@@ -15,7 +15,7 @@ public class PropHP extends AbstractProp {
 
     /**
      * 回血道具会让英雄机增加一滴血
-     * 最多 5 滴
+     * 英雄的最高血量有限制
      * @param hero
      */
     @Override

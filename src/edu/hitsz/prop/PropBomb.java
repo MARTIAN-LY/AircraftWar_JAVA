@@ -13,8 +13,6 @@ public class PropBomb extends AbstractProp{
         super(locationX, locationY, speedX, speedY);
     }
 
-
-
     /**
      * 炸弹道具对英雄机不生效
      * @param hero
@@ -22,7 +20,6 @@ public class PropBomb extends AbstractProp{
     @Override
     public void effect(HeroAircraft hero) {
     }
-
 
     /**
      * 炸弹道具会炸掉除 boss 外的敌机

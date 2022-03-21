@@ -28,7 +28,6 @@ abstract class AbstractFlyingObject
 }
 abstract class AbstractAircraft
 {
-	# axHp:int
     # hp:int
     + AbstractAircraft(int locationX, int locationY, int speedX, int speedY, int hp)
     + decreaseHp(int decrease):void
@@ -45,7 +44,10 @@ abstract class BaseBullet
 }
 
 abstract class AbstractProp{
-
+    + AbstractProp(int locationX, int locationY, int speedX, int speedY)
+    + forward():void
+    + {abstract} effect(HeroAircraft hero):void
+    + {abstract} effect(List<AbstractAircraft> enemy):void
 }
 
 AbstractFlyingObject <|-- AbstractAircraft
@@ -64,11 +66,26 @@ AbstractProp <|-- PropBomb
 AbstractProp <|-- PropFire
 AbstractProp <|-- PropHP
 
+PropBomb <.. SimplePropFactory
+PropFire <.. SimplePropFactory
+PropHP   <.. SimplePropFactory
+
+MobEnemy <.. SimpleEnemyFactory
+EliteEnemy <.. SimpleEnemyFactory
+BossEnemy <.. SimpleEnemyFactory
+
+BossEnemy o-- EnemyBullet
+EliteEnemy o-- EnemyBullet
+HeroAircraft o-- HeroBullet
+
 class HeroAircraft {
     - shootNum:int
     - power:int
     - direction:int
-    + HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp)
+    + maxHp:final int
+    + maxBullets:final int
+    - HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp)
+    + {static} getInstance():HeroAircraft
     + forward():void
     + shoot():List<BaseBullet>
 }
@@ -78,16 +95,27 @@ class MobEnemy {
     + forward():void
     + shoot():List<BaseBullet>
 }
+
 class EliteEnemy {
+    - shootNum:int
+    - power:int
+    - direction:int
     + EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
     + forward():void
     + shoot():List<BaseBullet>
 }
 
 class BossEnemy {
+    - shootNum:int
+    - power:int
+    - direction:int
     + BossEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
     + forward():void
     + shoot():List<BaseBullet>
+}
+
+class SimpleEnemyFactory {
+    + {static} createEnemy(int num):AbstractAircraft
 }
 
 class HeroBullet {
@@ -98,6 +126,26 @@ class HeroBullet {
 class EnemyBullet {
     + EnemyBullet(int locationX, int locationY,
      int speedX, int speedY, int power)
+}
+
+class PropBomb {
+    + PropBomb(int locationX, int locationY, int speedX, int speedY)
+    + effect(HeroAircraft hero):void
+    + effect(List<AbstractAircraft> enemy):void
+}
+class PropFire {
+    + PropFire(int locationX, int locationY, int speedX, int speedY)
+    + effect(HeroAircraft hero):void
+    + effect(List<AbstractAircraft> enemy):void
+}
+class PropHP {
+    + PropHP(int locationX, int locationY, int speedX, int speedY)
+    + effect(HeroAircraft hero):void
+    + effect(List<AbstractAircraft> enemy):void
+}
+
+class SimplePropFactory {
+    + {static} createProp(int num):AbstractProp
 }
 
 @enduml

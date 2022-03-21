@@ -30,7 +30,7 @@ public class Game extends JPanel {
     /**
      * 时间间隔(ms)，控制刷新频率
      */
-    private int timeInterval = 20;
+    private int timeInterval = 40;
 
     private final HeroAircraft heroAircraft;
     private final List<AbstractAircraft> enemyAircrafts;
@@ -48,7 +48,7 @@ public class Game extends JPanel {
      * 周期（ms)
      * 指示子弹的发射、敌机的产生频率
      */
-    private int cycleDuration = 40;
+    private int cycleDuration = 200;
     private int cycleTime = 0;
 
     //产生随机数
@@ -69,6 +69,8 @@ public class Game extends JPanel {
     private final int bombCode = 0;
     private final int fireCode = 1;
     private final int hpCode = 2;
+    private final int bossAppearScore = 1500;
+    private boolean bossExists = false;
 
     public Game() {
         //英雄机出场在中间，初始三滴血，单例模式
@@ -108,12 +110,19 @@ public class Game extends JPanel {
                 // 新敌机产生
                 if (enemyAircrafts.size() < enemyMaxNumber) {
                     // TODO
-                    if (time % (eliteAppearCycle * cycleDuration) == 0) {
-                        //该周期产生一架精英敌机
-                        enemyAircrafts.add(SimpleEnemyFactory.createEnemy(eliteCode));                                //精英敌机3滴血);
-                    } else if (time % (mobAppearCycle * cycleDuration) == 0) {
-                        //该周期出现一架普通敌机
-                        enemyAircrafts.add(SimpleEnemyFactory.createEnemy(mobCode));
+                    if (!bossExists) {
+                        if (time % (eliteAppearCycle * cycleDuration) == 0) {
+                            //该周期产生一架精英敌机
+                            enemyAircrafts.add(SimpleEnemyFactory.createEnemy(eliteCode));                                //精英敌机3滴血);
+                        } else if (time % (mobAppearCycle * cycleDuration) == 0) {
+                            //该周期出现一架普通敌机
+                            enemyAircrafts.add(SimpleEnemyFactory.createEnemy(mobCode));
+                        }
+                        if (score >= bossAppearScore && score % bossAppearScore == 0){
+                            //boss出现
+                            enemyAircrafts.add(SimpleEnemyFactory.createEnemy(bossCode));
+                            bossExists = true;
+                        }
                     }
 
                 }
@@ -180,7 +189,7 @@ public class Game extends JPanel {
     private void shootAction() {
         // TODO 敌机射击
         for (AbstractAircraft enemy : enemyAircrafts) {
-            if (enemy instanceof EliteEnemy) {
+            if (enemy instanceof EliteEnemy || enemy instanceof BossEnemy) {
                 enemyBullets.addAll(enemy.shoot());
             }
         }
@@ -266,6 +275,7 @@ public class Game extends JPanel {
                             score += bossScore;
                             //Boss死亡一定产生道具
                             addProp(random.nextInt(3));
+                            bossExists = false;
                         }
                     }
                 }

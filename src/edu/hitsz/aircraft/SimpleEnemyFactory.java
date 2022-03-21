@@ -36,7 +36,7 @@ public class SimpleEnemyFactory {
                         random.nextInt(Main.WINDOW_HEIGHT / 10),
                         random.nextInt(5) - 2,        //Boss敌机有一定的横向速度
                         0,                                          //Boss敌机无纵向速度
-                        50                                          //Boss敌机50滴血
+                        100                                          //Boss敌机50滴血
                 );
                 break;
         }

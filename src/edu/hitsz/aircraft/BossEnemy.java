@@ -14,7 +14,8 @@ public class BossEnemy extends AbstractAircraft {
     /**
      * 子弹一次发射数量
      */
-    private int shootNum = 2;
+    private int shootNum = 3;
+
     /**
      * 子弹伤害
      */
@@ -29,19 +30,19 @@ public class BossEnemy extends AbstractAircraft {
      * Boss射击，子弹速度快于敌机速度
      * @return
      */
-
     @Override
     public List<BaseBullet> shoot() {
         List<BaseBullet> res = new LinkedList<>();
         int x = this.getLocationX();
         int y = this.getLocationY() + this.getHeight() / 2;
         int speedX = this.getSpeedX();
+        int speedY = direction * 10;
 
-        for (int i = 0; i < shootNum; i++) {
-            // 子弹发射位置相对飞机位置向前偏移
-            // 多个子弹横向分散
-            res.add(new EnemyBullet(x + (i * 2 - shootNum + 1) * 10, 0, speedX, 0, power));
-        }
+        //Boss三条弹道
+        res.add(new EnemyBullet(x + (2 - shootNum + 1) * 10, y, -(speedX + 1), speedY, power));
+        res.add(new EnemyBullet(x + (4 - shootNum + 1) * 10, y, 0, speedY, power));
+        res.add(new EnemyBullet(x + (6 - shootNum + 1) * 10, y, (speedX + 1), speedY, power));
+
         return res;
     }
 
