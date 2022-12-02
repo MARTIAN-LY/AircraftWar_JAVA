@@ -168,7 +168,7 @@ public class Game extends JPanel {
     //***********************
 
     /**
-     * 每600毫秒一个周期，每40毫秒刷新一次，
+     * 每 cycleDuration 一个周期，每 40 毫秒刷新一次，
      * 每个周期出一架飞机
      * @return
      */
